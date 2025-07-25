@@ -12,4 +12,14 @@ class Book < ApplicationRecord
     greater_than: 1800, 
     less_than_or_equal_to: Date.today.year 
   }
+   scope :search_by_title_author_isbn, ->(query) {
+    joins(:author)
+      .where(
+        "books.title ILIKE :q OR 
+         authors.name ILIKE :q OR 
+         books.isbn = :exact",
+        q: "%#{query}%", exact: query
+      )
+      .distinct
+  }
 end
