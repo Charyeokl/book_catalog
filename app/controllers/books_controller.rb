@@ -1,6 +1,12 @@
 class BooksController < ApplicationController
   def index
     @books = Book.includes(:author, :publisher, :genres)
+                 .order(created_at: :desc)
+                 .page(params[:page]).per(25)
+  end
+  
+  def index
+    @books = Book.includes(:author, :publisher, :genres)
                  .order(rating: :desc)
                  .page(params[:page]).per(20)
   end
