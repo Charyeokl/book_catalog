@@ -1,0 +1,14 @@
+<strong>Rating:</strong>
+<% if rating %>
+  <span class="text-warning">
+    <% rating.floor.times do %>
+      ★
+    <% end %>
+    <% (5 - rating.floor).times do %>
+      ☆
+    <% end %>
+  </span>
+  <span class="text-muted">(<%= rating %>)</span>
+<% else %>
+  <span class="text-muted">Not rated</span>
+<% end %>

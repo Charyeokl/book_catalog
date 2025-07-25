@@ -1,2 +1,123 @@
 <h1>Books#show</h1>
 <p>Find me in app/views/books/show.html.erb</p>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0"><%= @book.title %></h1>
+            <%= link_to "Edit", "#", class: "btn btn-sm btn-outline-secondary" %>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 text-center mb-4 mb-md-0">
+              <div class="bg-light p-5 rounded">
+                <span class="display-1">📖</span>
+              </div>
+            </div>
+            
+            <div class="col-md-8">
+              <div class="mb-4">
+                <h3 class="h5">Book Details</h3>
+                <dl class="row">
+                  <dt class="col-sm-3">ISBN</dt>
+                  <dd class="col-sm-9"><%= @book.isbn %></dd>
+                  
+                  <dt class="col-sm-3">Published</dt>
+                  <dd class="col-sm-9"><%= @book.publication_year %></dd>
+                  
+                  <dt class="col-sm-3">Pages</dt>
+                  <dd class="col-sm-9"><%= @book.page_count || 'N/A' %></dd>
+                  
+                  <dt class="col-sm-3">Rating</dt>
+                  <dd class="col-sm-9">
+                    <%= render 'rating', rating: @book.rating %>
+                  </dd>
+                  
+                  <dt class="col-sm-3">Author</dt>
+                  <dd class="col-sm-9">
+                    <%= link_to @book.author.name, "#" %>
+                    <% if @book.author.birth_year %>
+                      <span class="text-muted">(b. <%= @book.author.birth_year %>)</span>
+                    <% end %>
+                  </dd>
+                  
+                  <dt class="col-sm-3">Publisher</dt>
+                  <dd class="col-sm-9">
+                    <%= link_to @book.publisher.name, "#" %>
+                    <% if @book.publisher.location %>
+                      <span class="text-muted">(<%= @book.publisher.location %>)</span>
+                    <% end %>
+                  </dd>
+                  
+                  <dt class="col-sm-3">Genres</dt>
+                  <dd class="col-sm-9">
+                    <% @book.genres.each do |genre| %>
+                      <span class="badge bg-primary"><%= genre.name %></span>
+                    <% end %>
+                  </dd>
+                </dl>
+              </div>
+              
+              <div>
+                <h3 class="h5">Description</h3>
+                <p class="card-text">
+                  <%= @book.description || "No description available." %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h2 class="h5 mb-0">Author Information</h2>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-3">
+            <div class="bg-light p-4 rounded-circle d-inline-block">
+              <span class="display-4">👤</span>
+            </div>
+          </div>
+          <h3 class="h5"><%= @book.author.name %></h3>
+          <% if @book.author.birth_year %>
+            <p class="mb-1"><strong>Born:</strong> <%= @book.author.birth_year %></p>
+          <% end %>
+          <% if @book.author.bio %>
+            <p class="mt-3"><%= truncate(@book.author.bio, length: 200) %></p>
+            <%= link_to "View full bio", "#" %>
+          <% else %>
+            <p class="text-muted">No biography available.</p>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header bg-light">
+          <h2 class="h5 mb-0">Publisher Details</h2>
+        </div>
+        <div class="card-body">
+          <h3 class="h5"><%= @book.publisher.name %></h3>
+          <% if @book.publisher.location %>
+            <p class="mb-0"><strong>Location:</strong> <%= @book.publisher.location %></p>
+          <% end %>
+          <hr>
+          <h4 class="h6">Other books from this publisher</h4>
+          <ul class="list-group list-group-flush">
+            <% @book.publisher.books.where.not(id: @book.id).limit(5).each do |book| %>
+              <li class="list-group-item px-0">
+                <%= link_to book.title, book %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

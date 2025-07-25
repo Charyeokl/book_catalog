@@ -19,6 +19,15 @@
   </head>
 
   <body>
+  <div class="container">
+  <nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+      <%= render_breadcrumbs :tag => :li, :separator => "" %>
+    </ol>
+  </nav>
+  
+  <%= yield %>
+</div>
     <%= render 'layouts/navigation' %>
     
     <div class="container">

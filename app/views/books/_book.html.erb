@@ -1,0 +1,33 @@
+<div class="col-md-6 mb-4">
+  <div class="card h-100">
+    <div class="row g-0">
+      <div class="col-md-4 d-flex align-items-center">
+        <div class="bg-light border-end p-3 h-100 d-flex align-items-center justify-content-center">
+          <span class="display-1 text-muted">📚</span>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to book.title, book %></h5>
+          <p class="card-text mb-1">
+            <strong>Author:</strong> <%= book.author.name %>
+          </p>
+          <p class="card-text mb-1">
+            <strong>Publisher:</strong> <%= book.publisher.name %>
+          </p>
+          <p class="card-text mb-1">
+            <strong>Published:</strong> <%= book.publication_year %>
+          </p>
+          <p class="card-text">
+            <%= render 'rating', rating: book.rating %>
+          </p>
+          <div class="d-flex flex-wrap gap-1">
+            <% book.genres.each do |genre| %>
+              <span class="badge bg-secondary"><%= genre.name %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
