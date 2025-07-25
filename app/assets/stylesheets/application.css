@@ -8,4 +8,21 @@
   border: 1px solid #ddd;
   padding: 15px;
   border-radius: 5px;
+  
+/* Add custom styles below */
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
 }

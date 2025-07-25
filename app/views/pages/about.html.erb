@@ -1,0 +1,101 @@
+<div class="container">
+  <h1>About the Book Catalog</h1>
+  
+  <section class="mt-5">
+    <h2>Data Sources</h2>
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Faker Gem</h3>
+        <p class="card-text">
+          Used to generate sample data for development and testing. Provides:
+        </p>
+        <ul>
+          <li>Publisher names</li>
+          <li>Author names</li>
+          <li>Book titles</li>
+          <li>Descriptions</li>
+          <li>Ratings</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h3 class="card-title">Google Books API</h3>
+        <p class="card-text">
+          Provides real book data through their public API. We use:
+        </p>
+        <ul>
+          <li>ISBN endpoint for book metadata</li>
+          <li>Volume search for book discovery</li>
+          <li>Industry-standard identifiers</li>
+        </ul>
+        <p>
+          <strong>API Documentation:</strong> 
+          <a href="https://developers.google.com/books" target="_blank">
+            https://developers.google.com/books
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h3 class="card-title">OpenLibrary API</h3>
+        <p class="card-text">
+          Provides open bibliographic data. We use:
+        </p>
+        <ul>
+          <li>Author information endpoint</li>
+          <li>Publisher metadata</li>
+          <li>Genre classifications</li>
+        </ul>
+        <p>
+          <strong>API Documentation:</strong> 
+          <a href="https://openlibrary.org/developers/api" target="_blank">
+            https://openlibrary.org/developers/api
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-5">
+    <h2>Database Schema</h2>
+    <div class="card">
+      <div class="card-body">
+        <h3>Entity Relationship Diagram</h3>
+        <pre class="bg-light p-3 rounded">
+          +-----------+       +---------+       +-------+
+          |  Authors  |       |  Books  |       | Genres|
+          +-----------+       +---------+       +-------+
+          | id        |1    * | id      |*    * | id    |
+          | name      |-------| title   |-------| name  |
+          | birth_year|       | isbn    |       +-------+
+          | bio       |       | year    |
+          +-----------+       | rating  |       +------------+
+                             | pages   |       | Publishers |
+                    +--------| author_id|      +------------+
+                    |        | pub_id   |1    *| id         |
+                    |        +---------+-------| name       |
+                    |                         | location   |
+                    |                         +------------+
+                    |
+                    |        +------------+
+                    |        | BookGenres|
+                    +------->+------------+
+                             | book_id   |
+                             | genre_id  |
+                             +------------+
+        </pre>
+        <p>Relationships:</p>
+        <ul>
+          <li>One Author has many Books</li>
+          <li>One Publisher has many Books</li>
+          <li>Books have many Genres through BookGenres</li>
+          <li>Genres have many Books through BookGenres</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>

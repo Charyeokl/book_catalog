@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "pages/about", to: "pages#about", as: "about"
   resources :books, only: [:index, :show] do
     collection do
       get :search
