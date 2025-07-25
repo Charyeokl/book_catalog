@@ -8,7 +8,7 @@
   border: 1px solid #ddd;
   padding: 15px;
   border-radius: 5px;
-  
+}
 /* Add custom styles below */
 .navbar-brand {
   font-weight: 700;
@@ -24,5 +24,4 @@
 
 .card:hover {
   transform: translateY(-5px);
-}
 }

@@ -1,20 +1,5 @@
 <h1>Book Catalog</h1>
 
-<%= form_tag search_books_path, method: :get do %>
-  <%= text_field_tag :q, params[:q], placeholder: "Search books..." %>
-  <%= submit_tag "Search" %>
-<% end %>
-
-<div class="books">
-  <% @books.each do |book| %>
-    <div class="book">
-      <h2><%= link_to book.title, book %></h2>
-      <p>Author: <%= book.author.name %></p>
-      <p>Rating: <%= book.rating %></p>
-      <p>Year: <%= book.publication_year %></p>
-    </div>
-  <% end %>
-</div>
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Book Catalog</h1>
@@ -68,14 +53,25 @@
       </div>
       
       <div class="row">
-        <%= render @books %>
+        <!-- Render book partials -->
+        <% @books.each do |book| %>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title"><%= link_to book.title, book %></h5>
+                <p class="card-text">Author: <%= book.author.name %></p>
+                <p class="card-text">Rating: <%= book.rating %></p>
+                <p class="card-text">Year: <%= book.publication_year %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
       
       <div class="d-flex justify-content-center mt-4">
-        <%= paginate @books, theme: 'bootstrap-5' %>
+        <!-- Fixed paginate call with correct theme name -->
+        <%= paginate @books, theme: 'bootstrap5' %>
       </div>
     </div>
   </div>
 </div>
-
-<%= paginate @books %>
