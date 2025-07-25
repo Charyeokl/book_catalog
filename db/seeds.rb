@@ -20,8 +20,15 @@ end
   )
 end
 
-# Create genres
-genres = Faker::Book.genres.uniq.map do |name|
+# Create genres - FIXED VERSION
+genre_names = [
+  "Fiction", "Mystery", "Science Fiction", "Fantasy", "Romance", 
+  "Thriller", "Horror", "Biography", "History", "Young Adult",
+  "Children's", "Poetry", "Comics", "Cookbook", "Self Help",
+  "Business", "Science", "Travel", "Art", "Religion"
+]
+
+genres = genre_names.map do |name|
   Genre.find_or_create_by!(name: name)
 end
 
