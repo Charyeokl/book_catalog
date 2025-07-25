@@ -1,5 +1,11 @@
 source "https://rubygems.org"
 
+gem 'faker', '~> 3.2'
+gem 'httparty', '~> 0.21.0' # For API integration
+gem 'chartkick', '~> 5.0' # For visualizations
+gem 'groupdate', '~> 6.3' # For time-based reporting
+gem 'pg_search', '~> 2.3' # For better search
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.2", ">= 7.2.2.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
