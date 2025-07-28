@@ -1,0 +1,17 @@
+<nav aria-label="pagination">
+  <ul class="pagination justify-content-center">
+    <%= render partial: 'kaminari/bootstrap5/first_page' unless current_page.first? %>
+    <%= render partial: 'kaminari/bootstrap5/prev_page' unless current_page.first? %>
+    
+    <% each_page do |page| %>
+      <% if page.left_outer? || page.right_outer? || page.inside_window? %>
+        <%= render partial: 'kaminari/bootstrap5/page', locals: { page: page } %>
+      <% elsif !page.was_truncated? %>
+        <%= render partial: 'kaminari/bootstrap5/gap' %>
+      <% end %>
+    <% end %>
+    
+    <%= render partial: 'kaminari/bootstrap5/next_page' unless current_page.last? %>
+    <%= render partial: 'kaminari/bootstrap5/last_page' unless current_page.last? %>
+  </ul>
+</nav>
