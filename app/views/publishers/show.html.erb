@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0"><%= @publisher.name %></h1>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <% if @publisher.location %>
+            <p class="mb-4"><strong>Location:</strong> <%= @publisher.location %></p>
+          <% end %>
+          
+          <h3 class="h5 mb-3">Books Published by <%= @publisher.name %></h3>
+          <div class="row">
+            <% @books.each do |book| %>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h4 class="h6 card-title">
+                      <%= link_to book.title, book %>
+                    </h4>
+                    <p class="card-text mb-1">
+                      <strong>Author:</strong> <%= link_to book.author.name, book.author %>
+                    </p>
+                    <p class="card-text mb-1">
+                      <strong>Published:</strong> <%= book.publication_year %>
+                    </p>
+                    <div class="mt-2">
+                      <% book.genres.each do |genre| %>
+                        <%= link_to genre.name, genre, class: "badge bg-secondary me-1" %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          
+          <div class="d-flex justify-content-center mt-4">
+            <%= paginate @books %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h2 class="h5 mb-0">Author Relationships</h2>
+        </div>
+        <div class="card-body">
+          <h3 class="h6">Top Authors</h3>
+          <ul class="list-group list-group-flush">
+            <% @publisher.authors.distinct.limit(5).each do |author| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <%= link_to author.name, author %>
+                <span class="badge bg-primary rounded-pill">
+                  <%= author.books.where(publisher: @publisher).count %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header bg-light">
+          <h2 class="h5 mb-0">Publication Timeline</h2>
+        </div>
+        <div class="card-body">
+          <%= line_chart @publisher.books.group_by_year(:publication_year).count %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

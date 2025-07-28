@@ -1,11 +1,10 @@
 <h1>Book Catalog</h1>
-
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Book Catalog</h1>
     <%= link_to "New Book", "#", class: "btn btn-primary" %>
   </div>
-
+  
   <div class="row">
     <div class="col-md-4 mb-4">
       <div class="card">
@@ -18,58 +17,113 @@
               <%= label_tag :q, "Search", class: "form-label" %>
               <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Title, author or ISBN" %>
             </div>
-            
+
             <div class="mb-3">
               <%= label_tag :genre_id, "Genre", class: "form-label" %>
-              <%= select_tag :genre_id, 
-                  options_from_collection_for_select(Genre.all, :id, :name, params[:genre_id]),
-                  include_blank: "All Genres",
-                  class: "form-select" %>
+              <%= select_tag :genre_id,
+                options_from_collection_for_select(Genre.all, :id, :name, params[:genre_id]),
+                include_blank: "All Genres",
+                class: "form-select" %>
             </div>
-            
+
             <div class="mb-3">
               <%= label_tag :min_rating, "Rating", class: "form-label" %>
               <div class="d-flex align-items-center">
-                <%= range_field_tag :min_rating, params[:min_rating] || 0, 
-                    min: 0, max: 5, step: 0.5, class: "form-range me-2" %>
+                <%= range_field_tag :min_rating, params[:min_rating] || 0,
+                  min: 0, max: 5, step: 0.5, class: "form-range me-2" %>
                 <span class="text-muted"><%= params[:min_rating] || 0 %>+</span>
               </div>
             </div>
-            
+
             <%= submit_tag "Apply Filters", class: "btn btn-sm btn-outline-primary w-100" %>
           <% end %>
         </div>
       </div>
     </div>
-    
-    <div class="col-md-8">
-       <div class="d-flex justify-content-center mt-4">
-  <%= paginate @books, theme: 'twitter-bootstrap' %> <!-- Changed to default theme -->
-</div>
-        <div>
-          <%= link_to "Table View", "#", class: "btn btn-sm btn-outline-secondary" %>
+
+    <div>
+      <%= link_to "Table View", "#", class: "btn btn-sm btn-outline-secondary" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Render book partials -->
+    <% @books.each do |book| %>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to book.title, book %></h5>
+            <p class="card-text">Author: <%= book.author.name %></p>
+            <p class="card-text">Rating: <%= book.rating %></p>
+            <p class="card-text">Year: <%= book.publication_year %></p>
+          </div>
         </div>
       </div>
-      
-      <div class="row">
-        <!-- Render book partials -->
-        <% @books.each do |book| %>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title"><%= link_to book.title, book %></h5>
-                <p class="card-text">Author: <%= book.author.name %></p>
-                <p class="card-text">Rating: <%= book.rating %></p>
-                <p class="card-text">Year: <%= book.publication_year %></p>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-header bg-light d-flex justify-content-between">
+          <h5 class="mb-0">Filters</h5>
+          <%= link_to "Reset", books_path, class: "btn btn-sm btn-outline-secondary" %>
+        </div>
+        <div class="card-body">
+          <%= search_form_for @q, url: books_path, method: :get do |f| %>
+            <div class="mb-3">
+              <%= f.label :title_cont, "Title contains", class: "form-label" %>
+              <%= f.search_field :title_cont, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :author_name_cont, "Author name", class: "form-label" %>
+              <%= f.search_field :author_name_cont, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :publication_year_gteq, "Publication Year", class: "form-label" %>
+              <div class="row g-2">
+                <div class="col">
+                  <%= f.number_field :publication_year_gteq,
+                    placeholder: "From",
+                    class: "form-control",
+                    min: 1800,
+                    max: Date.today.year %>
+                </div>
+                <div class="col">
+                  <%= f.number_field :publication_year_lteq,
+                    placeholder: "To",
+                    class: "form-control",
+                    min: 1800,
+                    max: Date.today.year %>
+                </div>
               </div>
             </div>
-          </div>
-        <% end %>
-      </div>
-      
-      <div class="d-flex justify-content-center mt-4">
-        <!-- Fixed paginate call with correct theme name -->
-        <%= paginate @books, theme: 'bootstrap5' %>
+
+            <!-- Fixed rating filter -->
+            <div class="mb-3">
+              <%= f.label :rating_gteq, "Minimum Rating", class: "form-label" %>
+              <%= f.select :rating_gteq,
+                options_for_select(
+                  [['Any', '']] + (1..5).step(0.5).map { |r| [r.to_s, r] },
+                  selected: @q.rating_gteq
+                ),
+                {},
+                class: "form-select" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :genres_name_in, "Genres", class: "form-label" %>
+              <%= f.collection_select :genres_name_in,
+                Genre.order(:name), :name, :name,
+                { include_blank: true },
+                { multiple: true, class: "form-select", size: 5 } %>
+            </div>
+
+            <%= f.submit "Apply Filters", class: "btn btn-primary w-100" %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

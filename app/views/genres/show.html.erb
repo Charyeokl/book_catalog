@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0"><%= @genre.name %></h1>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <h3 class="h5 mb-3">Top Books in <%= @genre.name %></h3>
+          <div class="row">
+            <% @books.each do |book| %>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h4 class="h6 card-title">
+                      <%= link_to book.title, book %>
+                    </h4>
+                    <p class="card-text mb-1">
+                      <strong>Author:</strong> <%= link_to book.author.name, book.author %>
+                    </p>
+                    <p class="card-text mb-1">
+                      <strong>Publisher:</strong> <%= link_to book.publisher.name, book.publisher %>
+                    </p>
+                    <p class="card-text mb-1">
+                      <%= render 'books/rating', rating: book.rating %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          
+          <div class="d-flex justify-content-center mt-4">
+            <%= paginate @books %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h2 class="h5 mb-0">Top Authors in <%= @genre.name %></h2>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <% @genre.authors.distinct.limit(5).each do |author| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <%= link_to author.name, author %>
+                <span class="badge bg-primary rounded-pill">
+                  <%= author.books.joins(:genres).where(genres: { id: @genre.id }).count %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header bg-light">
+          <h2 class="h5 mb-0">Top Publishers in <%= @genre.name %></h2>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <% @genre.publishers.distinct.limit(5).each do |publisher| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <%= link_to publisher.name, publisher %>
+                <span class="badge bg-primary rounded-pill">
+                  <%= publisher.books.joins(:genres).where(genres: { id: @genre.id }).count %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
