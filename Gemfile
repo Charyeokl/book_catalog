@@ -68,5 +68,5 @@ end
 
 gem "breadcrumbs_on_rails", "~> 4.1"
 
-gem "ransack", "~> 4.3"
+gem "ransack", "~> 4.4"
 
